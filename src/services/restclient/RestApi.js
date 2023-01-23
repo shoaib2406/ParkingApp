@@ -2,7 +2,6 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const loginService = async (email, password) => {
-  console.log('email.toLowerCase()', email.toLowerCase());
   try {
     return await axios.post(
       'https://transaction1122.herokuapp.com/user/sign_in',
@@ -225,6 +224,35 @@ export const updateCarTime = async (id, startData, endDate) => {
         headers: {
           Authorization: `Token ${await AsyncStorage.getItem('tokken')}`,
         },
+      }
+    );
+  } catch (error) {
+    const errr = JSON.stringify(error);
+    console.log('error', errr);
+    return error;
+  }
+};
+
+export const isUserName = async (username) => {
+  try {
+    return await axios.post(
+      'https://transaction1122.herokuapp.com/user/check_user',
+      { username }
+    );
+  } catch (error) {
+    const errr = JSON.stringify(error);
+    console.log('error', errr);
+    return error;
+  }
+};
+export const getForgetPassword = async (username, password) => {
+  console.log('kabukslidknlasnkdlas', username, password);
+  try {
+    return await axios.put(
+      'https://transaction1122.herokuapp.com/user/forget_password',
+      {
+        username: username.toLowerCase(),
+        password,
       }
     );
   } catch (error) {

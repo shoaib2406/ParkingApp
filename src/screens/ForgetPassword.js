@@ -8,7 +8,7 @@ import {
   Text,
 } from 'react-native';
 import logo from '../assets/images/logo.png';
-import { resetService } from '../services/restclient/RestApi';
+import { isUserName, resetService } from '../services/restclient/RestApi';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-toast-message';
 
@@ -17,7 +17,7 @@ const ForgetPassword = ({ navigation }) => {
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const ResetProfilefunc = () => {
+  const ForgetProfilefunc = () => {
     setEnabled(true);
     setLoading(true);
     let emailcheck = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -41,7 +41,34 @@ const ForgetPassword = ({ navigation }) => {
     } else {
       setEnabled(false);
       setLoading(false);
-      navigation.navigate('OTP');
+      let userNAMEE = userName.toLowerCase();
+      isUserName(userNAMEE)
+        .then((res) => {
+          setEnabled(false);
+          setLoading(false);
+          if (res.status === 201) {
+            navigation.navigate('OTP', {
+              email: userName,
+            });
+          } else {
+            Toast.show({
+              type: 'error',
+              text1: 'email Doesnot exist',
+              text2: 'There is a problem with your email',
+            });
+          }
+        })
+        .catch(() => {
+          setEnabled(false);
+          setLoading(false);
+          Toast.show({
+            type: 'error',
+            text1: 'Something went wrong',
+            text2: 'There is a problem with your email or password 👋',
+          });
+          // setPassword('');
+          // setEmail('');
+        });
     }
   };
   return (
@@ -90,7 +117,7 @@ const ForgetPassword = ({ navigation }) => {
           <TouchableOpacity
             disabled={enabled}
             onPressIn={() => {
-              ResetProfilefunc();
+              ForgetProfilefunc();
             }}
           >
             <View style={styles.loginButton}>

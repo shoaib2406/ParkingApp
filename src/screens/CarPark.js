@@ -29,6 +29,7 @@ const CarPark = ({ navigation }) => {
       .then((res) => {
         const result = JSON.parse(res.request._response);
         const dumm = Object.keys(result.data[0].BlockA);
+        console.log('dummdummdummdumm');
         setarr(result.data[0]['BlockA']);
         setarr1(result.data[0]['BlockB']);
         setarr2(result.data[0]['BlockC']);

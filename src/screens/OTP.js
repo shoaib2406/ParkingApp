@@ -12,7 +12,8 @@ import { resetService } from '../services/restclient/RestApi';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-toast-message';
 
-const OTP = ({ navigation }) => {
+const OTP = ({ route, navigation }) => {
+  const { email } = route.params;
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [OTP, setOTP] = useState('');
@@ -32,7 +33,9 @@ const OTP = ({ navigation }) => {
       setTimeout(() => {
         setEnabled(false);
         setLoading(false);
-        navigation.navigate('NewPasword');
+        navigation.navigate('NewPasword', {
+          email: email,
+        });
       }, 200);
     } else {
       setEnabled(false);

@@ -8,11 +8,15 @@ import {
   Text,
 } from 'react-native';
 import logo from '../assets/images/logo.png';
-import { resetService } from '../services/restclient/RestApi';
+import {
+  getForgetPassword,
+  resetService,
+} from '../services/restclient/RestApi';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-toast-message';
 
-const NewPasword = ({ navigation }) => {
+const NewPasword = ({ route, navigation }) => {
+  const { email } = route.params;
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [newPassword, setNewPassword] = useState('');
@@ -39,39 +43,31 @@ const NewPasword = ({ navigation }) => {
         text2: 'symbol, uppercase , lowercase , number is requird ',
       });
     } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Waiting for the API',
-        text2: 'WAITINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG ',
-      });
-      setTimeout(() => {
-        navigation.navigate('Signin');
-      }, 3000);
-      // resetService(newPassword, password)
-      //   .then((res) => {
-      //     setEnabled(false);
-      //     setLoading(false);
-      //     if (res.status === 200) {
-      //       if (res.data === 'Enter Correct Password') {
-      //         Toast.show({
-      //           type: 'error',
-      //           text1: 'Something went wrong',
-      //           text2: res.data,
-      //         });
-      //       } else {
-      //         navigation.navigate('DashBoard');
-      //       }
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     setEnabled(false);
-      //     setLoading(false);
-      //     Toast.show({
-      //       type: 'error',
-      //       text1: 'Something went wrong',
-      //       text2: 'There is a problem with your email ',
-      //     });
-      //   });
+      getForgetPassword(email, newPassword)
+        .then((res) => {
+          setEnabled(false);
+          setLoading(false);
+          console.log('resresresres', res);
+          if (res.status === 201) {
+            Toast.show({
+              type: 'success',
+              text1: 'Password changed successfully',
+              text2: '',
+            });
+            setTimeout(() => {
+              navigation.navigate('Signin');
+            }, 2000);
+          }
+        })
+        .catch((err) => {
+          setEnabled(false);
+          setLoading(false);
+          Toast.show({
+            type: 'error',
+            text1: 'Something went wrong',
+            text2: 'There is a problem with your email ',
+          });
+        });
     }
   };
   return (

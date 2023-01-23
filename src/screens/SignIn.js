@@ -35,13 +35,21 @@ const SignIn = ({ navigation }) => {
     } else {
       await loginService(email, password)
         .then((res) => {
-          AsyncStorage.setItem('tokken', res.data.token);
-          AsyncStorage.setItem('username', res.data.username);
-          AsyncStorage.setItem('name', res.data.name);
+          console.log('tokkentokkentokkentokken', res);
+
           setEnabled(false);
           setLoading(false);
           if (res.status === 200) {
+            AsyncStorage.setItem('tokken', res.data.token);
+            AsyncStorage.setItem('username', res.data.username);
+            AsyncStorage.setItem('name', res.data.name);
             navigation.navigate('DashBoard');
+          } else if (res.status > 400) {
+            Toast.show({
+              type: 'error',
+              text1: 'email or password is incorrect',
+              text2: 'There is a problem with your email or password 👋',
+            });
           }
         })
         .catch(() => {

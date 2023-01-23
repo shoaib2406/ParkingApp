@@ -11,6 +11,7 @@ import logo from '../assets/images/logo.png';
 import { loginService } from '../services/restclient/RestApi';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-toast-message';
+import { CardForm } from '@stripe/stripe-react-native';
 
 const AccountInfo = ({ route, navigation }) => {
   const { name } = route.params;
@@ -22,6 +23,10 @@ const AccountInfo = ({ route, navigation }) => {
 
   const ResetProfilefunc = async () => {
     setLoading(true);
+    console.log(
+      'cardNumber.last4cardNumber.last4cardNumber.last4',
+      cardNumber.last4
+    );
     if (cardNumber && !cardNumber.complete) {
       Toast.show({
         type: 'error',
@@ -63,6 +68,16 @@ const AccountInfo = ({ route, navigation }) => {
           <Text style={{ fontSize: 30, fontWiegth: '900', color: 'white' }}>
             Account Info
           </Text>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWiegth: '900',
+              color: 'red',
+              marginTop: 20,
+            }}
+          >
+            Payment for RS-{name}/
+          </Text>
         </View>
         <View
           style={{
@@ -70,13 +85,8 @@ const AccountInfo = ({ route, navigation }) => {
             alignItems: 'center',
           }}
         >
-          <View style={{ flex: 0.4, alignItems: 'center' }}>
-            <Text style={{ fontSize: 20, fontWiegth: '900', color: 'white' }}>
-              Payment for RS-{name}/
-            </Text>
-          </View>
           <View style={styles.loginBox}>
-            {/* <CardForm
+            <CardForm
               onFormComplete={(cardDetails) => {
                 console.log('card details', cardDetails);
                 setCard(cardDetails);
@@ -88,7 +98,7 @@ const AccountInfo = ({ route, navigation }) => {
                 placeholderColor: 'white',
               }}
               style={{ height: 350 }}
-            /> */}
+            />
           </View>
 
           <TouchableOpacity

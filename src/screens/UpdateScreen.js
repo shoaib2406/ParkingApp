@@ -26,7 +26,7 @@ const UpdateScreen = ({ navigation }) => {
       .then((res) => {
         const resultString = JSON.stringify(res);
         const toData = JSON.parse(resultString);
-        console.log('11111111111111111------', toData.data.data[0]);
+        console.log('11111111111111111------', res);
         setarr(toData.data.data[0]['BlockA']);
         setarr1(toData.data.data[0]['BlockB']);
         setarr2(toData.data.data[0]['BlockC']);
